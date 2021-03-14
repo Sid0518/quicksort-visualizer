@@ -38,8 +38,9 @@ class AnimatedElement {
             fill(this.textFill);
         noStroke();
 
-        textSize(0.8 * side);
+        textSize(0.7 * side);
         textAlign(CENTER, CENTER);
+        textFont("Segoe UI");
         text(this.value, this.center.x, this.center.y);
     }
 }
