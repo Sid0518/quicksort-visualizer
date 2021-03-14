@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>p5.js example</title>
+    <title>QuickSort Partition Visualization</title>
     <style> body {padding: 0; margin: 0;} </style>
     <script src="p5.js"></script>
     <script src="p5.sound.js"></script>
@@ -21,6 +21,18 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+
+      font-family: -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .heading {
+      padding: 1rem;
+
+      font-size: 2rem;
+      color: whitesmoke;
+      text-align: center;
+
+      border-bottom: 1px solid whitesmoke;
     }
 
     .legend {
@@ -31,17 +43,18 @@
       width: max-content;
       height: 50%;
       margin: auto;
+      padding-top: 1rem;
     }
 
     .legend-entry {
-      padding: 1rem;
+      padding: 0.8rem;
       display: flex;
       flex-direction: row;
     }
 
     .legend-entry div:nth-child(1) {
-      width: 50px;
-      height: 50px;
+      width: 2.5rem;
+      height: 2.5rem;
       margin-right: 1rem;
     }
 
@@ -58,8 +71,7 @@
     }
 
     .label {
-      font-family: -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: lighter;
       color: whitesmoke;
       margin: auto 0;
@@ -67,6 +79,10 @@
 
   </style>
   <body>
+      <div class="heading">
+        QuickSort Partition Visualization
+      </div>
+
       <div class="legend">
         <div class="legend-entry">
           <div class="white"></div>
