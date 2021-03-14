@@ -5,8 +5,9 @@ class SwapVisualizer {
             first.value,
             animArray.getCenter(i),
             {
-                fill: first.fill,
-                textFill: first.textFill,
+                fill: color(first.fill),
+                strokeWeight: first.strokeWeight,
+                textFill: color(first.textFill),
             }
         );
         this.first.target.set(
@@ -19,8 +20,9 @@ class SwapVisualizer {
             second.value,
             animArray.getCenter(j),
             {
-                fill: second.fill,
-                textFill: second.textFill,
+                fill: color(second.fill),
+                strokeWeight: second.strokeWeight,
+                textFill: color(second.textFill),
             }
         );
         this.second.target.set(
@@ -31,7 +33,13 @@ class SwapVisualizer {
         this.phase = 1;
 
         this.started = false;
-        setTimeout(() => this.started = true, ITERATION_DELAY/2);
+        this.messageDiv = document.querySelector(".message");
+
+        setTimeout(() => {
+            this.messageDiv.innerHTML = `Swapping indices ${i} and ${j}`;
+            this.started = true;
+        }, ITERATION_DELAY/2);
+
         this.done = false;
     }
 
@@ -62,6 +70,7 @@ class SwapVisualizer {
                     break;
 
                 case 3:
+                    this.messageDiv.innerHTML = "";
                     this.done = true;
                     break;
             }

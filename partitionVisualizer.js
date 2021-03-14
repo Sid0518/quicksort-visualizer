@@ -1,4 +1,4 @@
-const ITERATION_DELAY = 1500;
+const ITERATION_DELAY = 1800;
 class PartitionVisualizer {
     constructor(array, width, height) {
         this.animArray = new AnimatedArray(array, width/2, height/2);
@@ -33,6 +33,8 @@ class PartitionVisualizer {
         );
         
         this.swap = null;
+        this.messageDiv = document.querySelector(".message");
+        this.messageDiv.innerHTML = "Starting the partition algorithm";
 
         this.movedIndicator = false;
         this.finished = false;
@@ -63,9 +65,13 @@ class PartitionVisualizer {
         const x = this.animArray.get(this.j);
         if(x <= this.pivot.value) {
             if(!this.movedIndicator) {
+                this.messageDiv.innerHTML = `${x} is <= the pivot ${this.pivot.value}<br>It needs to be added to the left partition`;
+
                 this.i++;
-                this.indicator.target.set(this.animArray.getCenter(this.i));
-                this.movedIndicator = true;
+                setTimeout(() => {
+                    this.indicator.target.set(this.animArray.getCenter(this.i));
+                    this.movedIndicator = true;
+                }, ITERATION_DELAY/2);
             }
 
             else if(!this.indicator.moving) {
@@ -89,21 +95,31 @@ class PartitionVisualizer {
                     this.movedIndicator = false;
 
                     this.j++;
-                    if(this.j == this.animArray.length)
+
+                    if(this.j == this.animArray.length) {
+                        this.messageDiv.innerHTML = `Algorithm has finished<br>Partition index is ${this.i}`;
                         this.finished = true;
+                    }
+
                     else {
-                        this.currentElement.target.set(this.animArray.getCenter(this.j));
-                        setTimeout(() => this.runIteration(), ITERATION_DELAY);
+                        this.messageDiv.innerHTML = "Moving to the next element";
+                        setTimeout(() => {
+                            this.currentElement.target.set(this.animArray.getCenter(this.j));
+                            setTimeout(() => this.runIteration(), ITERATION_DELAY/2);
+                        }, ITERATION_DELAY/2);
                     }   
                 }
             }
         }
 
         else {
+            this.messageDiv.innerHTML = `${x} is larger than the pivot<br>Moving to the next element`;
             this.animArray.setColor(this.j, color(162, 213, 198));
             this.j++;
-            this.currentElement.target.set(this.animArray.getCenter(this.j));
-            setTimeout(() => this.runIteration(), ITERATION_DELAY);
+            setTimeout(() => {
+                this.currentElement.target.set(this.animArray.getCenter(this.j));
+                setTimeout(() => this.runIteration(), ITERATION_DELAY/2);
+            }, ITERATION_DELAY/2);
         }
     }
 

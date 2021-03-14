@@ -8,10 +8,10 @@ class AnimatedArray {
                 elem,
                 this.getCenter(idx),
                 {
-                    fill: 127,
-                    stroke: 255,
+                    fill: color(127),
+                    stroke: color(255),
                     strokeWeight: 0.5,
-                    textFill: 51,
+                    textFill: color(51),
                 }
             )
         );
@@ -33,8 +33,8 @@ class AnimatedArray {
         this.array[i].value = x;
     }
 
-    setColor(i, color) {
-        this.array[i].fill = color;
+    setColor(i, _color) {
+        this.array[i].fill = color(_color);
     }
 
     getCenter(i) {

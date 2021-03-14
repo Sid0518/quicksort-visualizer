@@ -25,6 +25,11 @@
       font-family: -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
     }
 
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
     .heading {
       padding: 1rem;
 
@@ -37,13 +42,20 @@
 
     .legend {
       display: flex;
-      flex-direction: column;
-      justify-content: space-around;
+      flex-direction: row;
+      justify-content: center;
 
       width: max-content;
-      height: 50%;
+      height: max-content;
       margin: auto;
       padding-top: 1rem;
+    }
+
+    .legend-left,
+    .legend-right {
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid whitesmoke;
     }
 
     .legend-entry {
@@ -70,11 +82,43 @@
       border: 4px solid rgb(127, 0, 255);
     }
 
-    .label {
+    .left {
+      background-color: rgb(7, 123, 138);
+    }
+
+    .right {
+      background-color: rgb(162, 213, 198);
+    }
+
+    .unvisited {
+      background-color: rgb(127, 127, 127);
+    }
+
+    .label, .message {
+      text-align: center;
       font-size: 1.25rem;
       font-weight: lighter;
       color: whitesmoke;
       margin: auto 0;
+    }
+
+    .message {
+      font-size: 1.8rem;
+    }
+
+    .message-wrapper {
+      height: 50%;
+
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%);
     }
 
   </style>
@@ -84,26 +128,59 @@
       </div>
 
       <div class="legend">
-        <div class="legend-entry">
-          <div class="white"></div>
-          <div class="label">
-            Position of the last element of the left partition 
+        
+        <div class="legend-left">
+          <div class="legend-entry">
+            <div class="white"></div>
+            <div class="label">
+              Position of the last element of the left partition 
+            </div>
+          </div>
+
+          <div class="legend-entry">
+            <div class="yellow"></div>
+            <div class="label">
+              Position of the current element
+            </div>
+          </div>
+
+          <div class="legend-entry">
+            <div class="violet"></div>
+            <div class="label">
+              Pivot
+            </div>
           </div>
         </div>
 
-        <div class="legend-entry">
-          <div class="yellow"></div>
-          <div class="label">
-            Position of the current element
+        <div class="legend-right">
+          <div class="legend-entry">
+            <div class="left"></div>
+            <div class="label">
+              Element belonging to the left partition
+            </div>
+          </div>
+
+          <div class="legend-entry">
+            <div class="right"></div>
+            <div class="label">
+              Element belonging to the right partition
+            </div>
+          </div>
+
+          <div class="legend-entry">
+            <div class="unvisited"></div>
+            <div class="label">
+              Unvisited element
+            </div>
           </div>
         </div>
 
-        <div class="legend-entry">
-          <div class="violet"></div>
-          <div class="label">
-            Pivot
-          </div>
-        </div>
+      </div>
+
+      <div class="message-wrapper">
+        <p class="message">
+          <!-- Details about the current iteration will be displayed here -->
+        </p>
       </div>
   </body>
 </html>
