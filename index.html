@@ -15,6 +15,79 @@
     
     <script src="sketch.js"></script>
   </head>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .legend {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+
+      width: max-content;
+      height: 50%;
+      margin: auto;
+    }
+
+    .legend-entry {
+      padding: 1rem;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .legend-entry div:nth-child(1) {
+      width: 50px;
+      height: 50px;
+      margin-right: 1rem;
+    }
+
+    .white {
+      border: 4px solid rgb(250, 250, 250);
+    }
+
+    .yellow {
+      border: 4px solid rgb(242, 203, 108);
+    }
+
+    .violet {
+      border: 4px solid rgb(127, 0, 255);
+    }
+
+    .label {
+      font-family: -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+      font-size: 1.5rem;
+      font-weight: lighter;
+      color: whitesmoke;
+      margin: auto 0;
+    }
+
+  </style>
   <body>
+      <div class="legend">
+        <div class="legend-entry">
+          <div class="white"></div>
+          <div class="label">
+            Position of the last element of the left partition 
+          </div>
+        </div>
+
+        <div class="legend-entry">
+          <div class="yellow"></div>
+          <div class="label">
+            Position of the current element
+          </div>
+        </div>
+
+        <div class="legend-entry">
+          <div class="violet"></div>
+          <div class="label">
+            Pivot
+          </div>
+        </div>
+      </div>
   </body>
 </html>

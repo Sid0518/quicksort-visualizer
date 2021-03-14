@@ -17,6 +17,14 @@ class AnimatedArray {
         );
     }
 
+    setCenter(x, y) {
+        this.center.set(x, y);
+        this.array.forEach((elem, idx) => {
+            elem.center.set(this.getCenter(idx));
+            elem.target.set(elem.center);
+        })
+    }
+
     get(i) {
         return this.array[i].value;
     }
