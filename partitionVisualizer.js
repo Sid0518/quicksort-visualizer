@@ -75,7 +75,7 @@ class PartitionVisualizer {
             }
 
             else if(!this.indicator.moving) {
-                if(this.swap === null) {
+                if(this.swap === null && this.i !== this.j) {
                     this.swap = new SwapVisualizer(this.animArray, this.i, this.j);
                     this.animArray.array[this.i].textFill = undefined;
                     this.animArray.array[this.j].textFill = undefined;
@@ -85,8 +85,8 @@ class PartitionVisualizer {
                     this.animArray.set(this.j, this.animArray.get(this.i));
                     this.animArray.set(this.i, x);
 
-                    this.animArray.setColor(this.i, color(7, 123, 138));
                     this.animArray.setColor(this.j, color(162, 213, 198));
+                    this.animArray.setColor(this.i, color(7, 123, 138));
 
                     this.animArray.array[this.i].textFill = 51;
                     this.animArray.array[this.j].textFill = 51;
