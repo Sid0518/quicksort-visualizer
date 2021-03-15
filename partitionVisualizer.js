@@ -36,7 +36,6 @@ class PartitionVisualizer {
         this.messageDiv = document.querySelector(".message");
         this.messageDiv.innerHTML = "Starting the partition algorithm";
 
-        this.movedIndicator = false;
         this.finished = false;
     }
 
@@ -57,51 +56,43 @@ class PartitionVisualizer {
 
         const x = this.animArray.get(this.j);
         if(x <= this.pivot.value) {
-            if(!this.movedIndicator) {
-                this.messageDiv.innerHTML = `${x} is <= the pivot ${this.pivot.value}<br>It needs to be added to the left partition`;
-
-                this.i++;
-                setTimeout(() => {
-                    this.indicator.target.set(this.animArray.getCenter(this.i));
-                    this.movedIndicator = true;
-                }, ITERATION_DELAY/2);
+            this.messageDiv.innerHTML = `${x} is <= the pivot ${this.pivot.value}<br>It needs to be added to the left partition`;
+            
+            if(this.swap === null && (this.i + 1) !== this.j) {
+                this.swap = new SwapVisualizer(this.animArray, this.i + 1, this.j);
+                this.animArray.array[this.i + 1].textFill = undefined;
+                this.animArray.array[this.j].textFill = undefined;
             }
+            
+            else {
+                this.i++;
+                this.animArray.set(this.j, this.animArray.get(this.i));
+                this.animArray.set(this.i, x);
 
-            else if(!this.indicator.moving) {
-                if(this.swap === null && this.i !== this.j) {
-                    this.swap = new SwapVisualizer(this.animArray, this.i, this.j);
-                    this.animArray.array[this.i].textFill = undefined;
-                    this.animArray.array[this.j].textFill = undefined;
+                this.animArray.setColor(this.j, color(162, 213, 198));
+                this.animArray.setColor(this.i, color(7, 123, 138));
+
+                this.animArray.array[this.i].textFill = 51;
+                this.animArray.array[this.j].textFill = 51;
+
+                this.swap = null;
+
+                this.j++;
+
+                if(this.j == this.animArray.length) {
+                    this.messageDiv.innerHTML = `Algorithm has finished<br>Partition index is ${this.i}`;
+                    this.finished = true;
                 }
-                
+
                 else {
-                    this.animArray.set(this.j, this.animArray.get(this.i));
-                    this.animArray.set(this.i, x);
+                    this.messageDiv.innerHTML = "Moving to the next element";
+                    setTimeout(() => {
+                        this.indicator.target.set(this.animArray.getCenter(this.i));
+                        this.currentElement.target.set(this.animArray.getCenter(this.j));
 
-                    this.animArray.setColor(this.j, color(162, 213, 198));
-                    this.animArray.setColor(this.i, color(7, 123, 138));
-
-                    this.animArray.array[this.i].textFill = 51;
-                    this.animArray.array[this.j].textFill = 51;
-
-                    this.swap = null;
-                    this.movedIndicator = false;
-
-                    this.j++;
-
-                    if(this.j == this.animArray.length) {
-                        this.messageDiv.innerHTML = `Algorithm has finished<br>Partition index is ${this.i}`;
-                        this.finished = true;
-                    }
-
-                    else {
-                        this.messageDiv.innerHTML = "Moving to the next element";
-                        setTimeout(() => {
-                            this.currentElement.target.set(this.animArray.getCenter(this.j));
-                            setTimeout(() => this.runIteration(), ITERATION_DELAY/2);
-                        }, ITERATION_DELAY/2);
-                    }   
-                }
+                        setTimeout(() => this.runIteration(), ITERATION_DELAY/2);
+                    }, ITERATION_DELAY/2);
+                }   
             }
         }
 
@@ -133,9 +124,6 @@ class PartitionVisualizer {
             if(this.swap.done)
                 this.runIteration();
         }
-
-        else if(this.movedIndicator && !this.indicator.moving)
-            this.runIteration();
     }
 
     show() {
