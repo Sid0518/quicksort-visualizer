@@ -1,4 +1,4 @@
-let side = 80;
+let side;
 class AnimatedElement {
     constructor(value, center, displayArgs) {
         this.value = value;

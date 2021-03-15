@@ -1,7 +1,7 @@
 const ITERATION_DELAY = 1800;
 class PartitionVisualizer {
     constructor(array, width, height) {
-        this.animArray = new AnimatedArray(array, width/2, height/2);
+        this.animArray = new AnimatedArray(array, width/2, side);
         
         this.i = -1;
         this.indicator = new AnimatedElement(
@@ -117,7 +117,7 @@ class PartitionVisualizer {
     }
 
     update() {
-        this.animArray.setCenter(width/2, height/2);
+        this.animArray.setCenter(width/2, side);
         this.indicator.target.set(this.animArray.getCenter(this.i));
         this.currentElement.target.set(this.animArray.getCenter(this.j));
         this.pivot.target.set(this.animArray.getCenter(this.animArray.length - 1));

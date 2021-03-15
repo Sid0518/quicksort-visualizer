@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="">
   <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuickSort Partition Visualization</title>
     <style> body {padding: 0; margin: 0;} </style>
+
     <script src="p5.js"></script>
     <script src="p5.sound.js"></script>
 
@@ -12,8 +14,7 @@
     <script src="animatedArray.js"></script>
     <script src="swapVisualizer.js"></script>
     <script src="partitionVisualizer.js"></script>
-    
-    <script src="sketch.js"></script>
+
   </head>
 
   <style>
@@ -29,12 +30,15 @@
       height: 100%;
       width: 100%;
       overflow: hidden;
+
+      background-color: rgb(51, 51, 51);
     }
 
     .heading {
       padding: 1rem;
 
       font-size: 2rem;
+      transition: font-size 200ms;
       color: whitesmoke;
       text-align: center;
 
@@ -46,8 +50,8 @@
       flex-direction: row;
       justify-content: center;
 
-      width: max-content;
-      height: max-content;
+      max-width: max-content;
+      max-height: max-content;
       margin: auto;
       padding-top: 1rem;
     }
@@ -56,8 +60,9 @@
     .legend-right {
       display: flex;
       flex-direction: column;
+      justify-content: space-around;
       border-left: 1px solid whitesmoke;
-      padding-right: 1rem;
+      margin: 0 0.5rem;
     }
 
     .legend-entry {
@@ -67,9 +72,13 @@
     }
 
     .legend-entry div:nth-child(1) {
-      width: 2.5rem;
-      height: 2.5rem;
-      margin-right: 1rem;
+      min-width: 2.5rem;
+      max-width: 2.5rem;
+
+      min-height: 2.5rem;
+      max-height: 2.5rem;
+
+      margin: auto 0;
     }
 
     .white {
@@ -96,31 +105,49 @@
       background-color: rgb(127, 127, 127);
     }
 
+    #p5-sketch {
+      margin-top: 2rem; 
+      height: 35%;
+      position: relative;
+    }
+
     .label, .message {
-      text-align: center;
       font-size: 1.25rem;
       font-weight: lighter;
+      transition: font-size 200ms;
+
       color: whitesmoke;
       margin: auto 0;
     }
 
+    .label {
+      margin-left: 1rem;
+    }
+
     .message {
+      text-align: center;
       font-size: 1.8rem;
+      transition: font-size 200ms;
     }
 
     .message-wrapper {
-      height: 50%;
-
-      margin: auto;
-
       display: flex;
       align-items: center;
       justify-content: center;
+    }
 
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translate(-50%);
+    @media only screen and (max-width: 576px) {
+      .heading {
+        font-size: 1.7rem;
+      }
+
+      .label {
+        font-size: 1.1rem;
+      }
+
+      .message {
+        font-size: 1.5rem;
+      }
     }
 
   </style>
@@ -179,10 +206,14 @@
 
       </div>
 
+      <div id="p5-sketch"></div>
+
       <div class="message-wrapper">
         <p class="message">
           <!-- Details about the current iteration will be displayed here -->
         </p>
       </div>
+      
+      <script src="sketch.js"></script>
   </body>
 </html>
