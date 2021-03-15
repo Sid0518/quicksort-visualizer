@@ -1,4 +1,3 @@
-const ITERATION_DELAY = 800;
 class PartitionVisualizer {
     constructor(array, start, end, center) {
         this.animArray = new AnimatedArray(array, center);
@@ -43,7 +42,7 @@ class PartitionVisualizer {
     }
 
     async startDelayed() {
-        await sleep(ITERATION_DELAY);
+        await sleep(1500/SPEED);
         this.runIteration();
     }
 
@@ -63,50 +62,64 @@ class PartitionVisualizer {
             return;
 
         const x = this.animArray.get(this.j);
-        if(x <= this.pivot.value) {
-            this.messageDiv.innerHTML = `
-                ${x} is <= the pivot ${this.pivot.value}
-                <br>
-                It needs to be added to the left partition
-            `;
-            
-            if(this.swap === null && (this.i + 1) !== this.j) {
-                this.swap = new SwapVisualizer(this.animArray, this.i + 1, this.j);
-                this.swap.startDelayed();
-                this.animArray.array[this.i + 1].textFill = undefined;
+        if(x <= this.pivot.value) {      
+            const i = this.i + 1; // delayed increment
+    
+            if(this.swap === null && i !== this.j) {
+                this.messageDiv.innerHTML = `
+                    ${x} is <i>not greater</i> than the pivot
+                    <br>
+                    It needs to be added to the <i>left</i> partition
+                `;
+                this.swap = new SwapVisualizer(this.animArray, i, this.j);
+                await this.swap.startDelayed();
+
+                this.animArray.array[i].textFill = undefined;
                 this.animArray.array[this.j].textFill = undefined;
             }
             
             else {
-                this.i++;
-                this.animArray.set(this.j, this.animArray.get(this.i));
-                this.animArray.set(this.i, x);
+                // this.i++;
+                this.animArray.set(this.j, this.animArray.get(i));
+                this.animArray.set(i, x);
 
                 this.animArray.setColor(this.j, color(162, 213, 198));
-                this.animArray.setColor(this.i, color(7, 123, 138));
+                this.animArray.setColor(i, color(7, 123, 138));
 
-                this.animArray.array[this.i].textFill = 51;
+                this.animArray.array[i].textFill = 51;
                 this.animArray.array[this.j].textFill = 51;
 
                 this.swap = null;
 
-                this.j++;
-                if(this.j > this.end) {
+                if(this.j === this.end) {
+                    this.i++;
                     this.messageDiv.innerHTML = `
-                        Partitioning has finished<br>Partition index is ${this.i}
+                        Partitioning has finished
+                        <br>
+                        Partition index is ${this.i}
                     `;
-                    this.animArray.setColor(this.i, color(127, 0, 255));
+                    this.animArray.setColor(i, color(127, 0, 255));
                     this.finished = true;
                 }
 
                 else {
-                    this.messageDiv.innerHTML = "Moving to the next element";
-                    await sleep(ITERATION_DELAY);
-
-                    this.indicator.target.set(this.animArray.getCenter(this.i));
-                    this.currentElement.target.set(this.animArray.getCenter(this.j));
-                    await sleep(ITERATION_DELAY);
-
+                    if(i === this.j) {
+                        this.messageDiv.innerHTML = `
+                            Nothing to swap with,
+                            <br>
+                            since the right partition is empty
+                        `;
+                        await sleep(1500/SPEED);
+                    }
+                    
+                    this.messageDiv.innerHTML = `
+                        Moving to the next element
+                    `;
+                    await sleep(1000/SPEED);
+                    this.i++;
+                    this.j++;
+                    
+                    await sleep(1500/SPEED);
                     this.runIteration();
                 }   
             }
@@ -114,16 +127,22 @@ class PartitionVisualizer {
 
         else {
             this.messageDiv.innerHTML = `
-                ${x} is larger than the pivot<br>Moving to the next element
+                ${x} is <i>greater</i> than the pivot
+                <br>
+                It needs to be added to the <i>right</i> partition
             `;
+            await sleep(1500/SPEED);
+
             this.animArray.setColor(this.j, color(162, 213, 198));
+            await sleep(1500/SPEED);
             
+            this.messageDiv.innerHTML = `
+                Moving to the next element
+            `;
+            await sleep(1000/SPEED);
             this.j++;
-            await sleep(ITERATION_DELAY);
-            
-            this.currentElement.target.set(this.animArray.getCenter(this.j));
-            await sleep(ITERATION_DELAY);
-            
+
+            await sleep(1500/SPEED);
             this.runIteration();
         }
     }

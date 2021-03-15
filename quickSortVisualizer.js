@@ -36,6 +36,7 @@ class QuickSortVisualizer {
                 this.array,
                 this.center,
             );
+            this.partition = null;
             
             const messageDiv = document.querySelector(".message");
             messageDiv.innerHTML = "QuickSort finished";
@@ -52,8 +53,8 @@ class QuickSortVisualizer {
         this.partition.startDelayed();
     }
 
-    update() {
-        if(this.start === null)
+    async update() {
+        if(this.finished || this.start === null)
             return;
 
         this.partition.update();
@@ -67,6 +68,8 @@ class QuickSortVisualizer {
 
             this.start = null;
             this.end = null;
+
+            await sleep(2000/SPEED);
             this.performPartition();
         }
     }

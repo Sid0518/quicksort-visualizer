@@ -16,7 +16,7 @@ class AnimatedElement {
     }
 
     update() {
-        this.center.lerp(this.target, 0.16);
+        this.center.lerp(this.target, 0.15 * SPEED);
     }
 
     show() {

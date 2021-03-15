@@ -1,3 +1,5 @@
+const SPEED = 1.5;
+
 const array = [9, 4, 6, 3, 9, 8, 13, 10, 5, 6, 7];
 const sketch = document.querySelector("#p5-sketch");
 let visualizer;

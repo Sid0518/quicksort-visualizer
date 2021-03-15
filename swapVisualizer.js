@@ -43,9 +43,13 @@ class SwapVisualizer {
     }
 
     async startDelayed() {
-        await sleep(ITERATION_DELAY);
+        await sleep(1500/SPEED);
 
-        this.messageDiv.innerHTML = `Swapping indices ${this.i} and ${this.j}`;
+        this.messageDiv.innerHTML = `
+            Swapping first element of the right partition
+            <br>
+            with the current element
+        `;
         this.started = true;
     }
 
