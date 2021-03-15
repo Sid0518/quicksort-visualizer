@@ -1,52 +1,53 @@
-const ITERATION_DELAY = 1800;
+const ITERATION_DELAY = 800;
 class PartitionVisualizer {
-    constructor(array, center) {
+    constructor(array, start, end, center) {
         this.animArray = new AnimatedArray(array, center);
-        let target;
+        this.start = start;
+        this.end = end;
 
-        this.i = -1;
-        target = this.animArray.getCenter(this.i);
-        this.indicator = new AnimatedElement(
-            '',
-            createVector(-side, target.y),
-            {
-                stroke: 250,
-                strokeWeight: 4,
-            }
-        );
-        this.indicator.target.set(target);
+        /*-----------------------------------------------------------*/
+            // 'Fade out' the elements outside the range (start, end)
+        for(let i = 0;i < start;i++)
+            this.animArray.setColor(i, color(64));
 
-        this.j = 0;
-        target = this.animArray.getCenter(this.j);
-        this.currentElement = new AnimatedElement(
-            '',
-            createVector(-side, target.y),
-            {
-                stroke: color(242, 203, 108),
-                strokeWeight: 4,
-            }
-        );
-        this.currentElement.target.set(target);
+        for(let i = end + 1;i < array.length;i++)
+            this.animArray.setColor(i, color(64));
+        /*-----------------------------------------------------------*/
 
-        target = this.animArray.getCenter(array.length - 1);
-        this.pivot = new AnimatedElement(
-            array[array.length - 1],
-            createVector(-side, target.y),
-            {
-                stroke: color(127, 0, 255),
-                strokeWeight: 4,
-            }
-        );
-        this.pivot.target.set(target);
+        const createElement = (value, index, stroke) => {
+            const target = this.animArray.getCenter(index);
+            const element = new AnimatedElement(
+                value,
+                createVector(-side, target.y),
+                {
+                    stroke: stroke,
+                    strokeWeight: 4,
+                }
+            );
+            return element;
+        };
+
+        this.i = start - 1;
+        this.indicator = createElement('', this.i, color(250));
+
+        this.j = start;
+        this.currentElement = createElement('', this.i, color(242, 203, 108));
+        
+        this.pivot = createElement(array[this.end], this.end, color(127, 0, 255));
         
         this.swap = null;
         this.messageDiv = document.querySelector(".message");
-        this.messageDiv.innerHTML = "Starting the partition algorithm";
+        this.messageDiv.innerHTML = `Partitioning the subarray from<br>${this.start} to ${this.end}`;
 
         this.finished = false;
     }
 
-    runIteration() {
+    async startDelayed() {
+        await sleep(ITERATION_DELAY);
+        this.runIteration();
+    }
+
+    async runIteration() {
         /*
             One iteration looks like this:
 
@@ -63,10 +64,15 @@ class PartitionVisualizer {
 
         const x = this.animArray.get(this.j);
         if(x <= this.pivot.value) {
-            this.messageDiv.innerHTML = `${x} is <= the pivot ${this.pivot.value}<br>It needs to be added to the left partition`;
+            this.messageDiv.innerHTML = `
+                ${x} is <= the pivot ${this.pivot.value}
+                <br>
+                It needs to be added to the left partition
+            `;
             
             if(this.swap === null && (this.i + 1) !== this.j) {
                 this.swap = new SwapVisualizer(this.animArray, this.i + 1, this.j);
+                this.swap.startDelayed();
                 this.animArray.array[this.i + 1].textFill = undefined;
                 this.animArray.array[this.j].textFill = undefined;
             }
@@ -85,50 +91,60 @@ class PartitionVisualizer {
                 this.swap = null;
 
                 this.j++;
-
-                if(this.j === this.animArray.length) {
-                    this.messageDiv.innerHTML = `Algorithm has finished<br>Partition index is ${this.i}`;
+                if(this.j > this.end) {
+                    this.messageDiv.innerHTML = `
+                        Partitioning has finished<br>Partition index is ${this.i}
+                    `;
                     this.animArray.setColor(this.i, color(127, 0, 255));
                     this.finished = true;
                 }
 
                 else {
                     this.messageDiv.innerHTML = "Moving to the next element";
-                    setTimeout(() => {
-                        this.indicator.target.set(this.animArray.getCenter(this.i));
-                        this.currentElement.target.set(this.animArray.getCenter(this.j));
+                    await sleep(ITERATION_DELAY);
 
-                        setTimeout(() => this.runIteration(), ITERATION_DELAY/2);
-                    }, ITERATION_DELAY/2);
+                    this.indicator.target.set(this.animArray.getCenter(this.i));
+                    this.currentElement.target.set(this.animArray.getCenter(this.j));
+                    await sleep(ITERATION_DELAY);
+
+                    this.runIteration();
                 }   
             }
         }
 
         else {
-            this.messageDiv.innerHTML = `${x} is larger than the pivot<br>Moving to the next element`;
+            this.messageDiv.innerHTML = `
+                ${x} is larger than the pivot<br>Moving to the next element
+            `;
             this.animArray.setColor(this.j, color(162, 213, 198));
+            
             this.j++;
-            setTimeout(() => {
-                this.currentElement.target.set(this.animArray.getCenter(this.j));
-                setTimeout(() => this.runIteration(), ITERATION_DELAY/2);
-            }, ITERATION_DELAY/2);
+            await sleep(ITERATION_DELAY);
+            
+            this.currentElement.target.set(this.animArray.getCenter(this.j));
+            await sleep(ITERATION_DELAY);
+            
+            this.runIteration();
         }
     }
 
     update() {
         this.animArray.setCenter(width/2, side);
-        this.indicator.target.set(this.animArray.getCenter(this.i));
-        this.currentElement.target.set(this.animArray.getCenter(this.j));
-        this.pivot.target.set(this.animArray.getCenter(this.animArray.length - 1));
-
         this.animArray.update();
+
+        this.indicator.target.set(this.animArray.getCenter(this.i));
         this.indicator.update();
+
+        this.currentElement.target.set(this.animArray.getCenter(this.j));
         this.currentElement.update();
+
+        this.pivot.target.set(this.animArray.getCenter(this.end));
         this.pivot.update();
 
         if(this.swap !== null) {
             this.swap.update();
-            if(this.j === this.animArray.length - 1 && this.swap.phase === 3)
+
+            if(this.j === this.end && this.swap.phase === 3)
                 this.swap.second.fill = color(127, 0, 255);
             
             if(this.swap.done)
@@ -143,8 +159,9 @@ class PartitionVisualizer {
             this.swap.show();
 
         if(!this.finished) {
-            
-            this.indicator.show();
+            if(this.i >= this.start)
+                this.indicator.show();
+
             this.pivot.show();
             this.currentElement.show();
         }

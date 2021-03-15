@@ -35,16 +35,18 @@ class SwapVisualizer {
         );
 
         this.phase = 1;
+        this.done = false;
 
-        this.started = false;
         this.messageDiv = document.querySelector(".message");
 
-        setTimeout(() => {
-            this.messageDiv.innerHTML = `Swapping indices ${i} and ${j}`;
-            this.started = true;
-        }, ITERATION_DELAY/2);
+        this.started = false;
+    }
 
-        this.done = false;
+    async startDelayed() {
+        await sleep(ITERATION_DELAY);
+
+        this.messageDiv.innerHTML = `Swapping indices ${this.i} and ${this.j}`;
+        this.started = true;
     }
 
     update() {
