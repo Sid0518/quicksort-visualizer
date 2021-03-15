@@ -1,7 +1,7 @@
 const ITERATION_DELAY = 1800;
 class PartitionVisualizer {
-    constructor(array, width, height) {
-        this.animArray = new AnimatedArray(array, width/2, side);
+    constructor(array, center) {
+        this.animArray = new AnimatedArray(array, center);
         let target;
 
         this.i = -1;
@@ -142,9 +142,9 @@ class PartitionVisualizer {
         if(this.swap !== null)
             this.swap.show();
 
-        this.indicator.show();
-
         if(!this.finished) {
+            
+            this.indicator.show();
             this.pivot.show();
             this.currentElement.show();
         }

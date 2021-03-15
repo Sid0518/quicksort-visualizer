@@ -1,7 +1,7 @@
 class AnimatedArray {
-    constructor(array, x, y) {
+    constructor(array, center) {
         this.length = array.length;
-        this.center = createVector(x, y);
+        this.center = center;
 
         this.array = array.map((elem, idx) =>
             new AnimatedElement(

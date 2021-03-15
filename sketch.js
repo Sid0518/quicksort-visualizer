@@ -8,8 +8,7 @@ function setup() {
     canvas.parent("p5-sketch");
 
     side = min(width/(array.length + 2.5), height/3);
-    visualizer = new PartitionVisualizer(array, width, height);
-    setTimeout(() => visualizer.runIteration(), ITERATION_DELAY);
+    visualizer = new QuickSortVisualizer(array);
 }
 
 function windowResized() {
