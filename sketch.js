@@ -11,7 +11,6 @@ function setup() {
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
-    visualizer.setWindow(width, height);
 }
 
 function draw() {

@@ -1,5 +1,9 @@
 class SwapVisualizer {
     constructor(animArray, i, j) {
+        this.animArray = animArray;
+        this.i = i;
+        this.j = j;
+        
         const first = animArray.array[i];
         this.first = new AnimatedElement(
             first.value,
@@ -50,30 +54,36 @@ class SwapVisualizer {
         this.first.update();
         this.second.update();
 
-        if(this.first.center.dist(this.first.target) < 1) {
-            switch(this.phase) {
-                case 1:                
-                    this.first.target.set(this.second.center);
-                    this.second.target.set(this.first.center);
+        const firstTarget = this.animArray.getCenter(this.i);
+        const secondTarget = this.animArray.getCenter(this.j);
 
-                    this.phase = 2;
-                    break;
+        if(this.first.center.dist(this.first.target) < 1)
+            this.phase++;
 
-                case 2:
-                    this.first.target.set(this.first.center.x, this.first.center.y - 1.5*side);
-                    this.second.target.set(this.second.center.x, this.second.center.y - 1.5*side);
-                    
-                    this.first.fill = color(162, 213, 198);
-                    this.second.fill = color(7, 123, 138);
+        switch(this.phase) {
+            case 1:                
+                this.first.target.set(firstTarget.x, firstTarget.y + 1.5*side);
+                this.second.target.set(secondTarget.x, secondTarget.y + 1.5*side);
+                break;
 
-                    this.phase = 3;
-                    break;
+            case 2:
+                this.first.target.set(secondTarget.x, secondTarget.y + 1.5*side);
+                this.second.target.set(firstTarget.x, firstTarget.y + 1.5*side);
+                break;
 
-                case 3:
-                    this.messageDiv.innerHTML = "";
-                    this.done = true;
-                    break;
-            }
+            case 3:
+                this.first.target.set(secondTarget.x, secondTarget.y);
+                this.second.target.set(firstTarget.x, firstTarget.y);
+
+                this.first.fill = color(162, 213, 198);
+                this.second.fill = color(7, 123, 138);
+                break;
+                
+
+            case 4:
+                this.messageDiv.innerHTML = "";
+                this.done = true;
+                break;
         }
     }
 

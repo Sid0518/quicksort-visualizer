@@ -40,13 +40,6 @@ class PartitionVisualizer {
         this.finished = false;
     }
 
-    setWindow() {
-        this.animArray.setCenter(width/2, height/2);
-        this.indicator.target.set(this.animArray.getCenter(this.i));
-        this.currentElement.target.set(this.animArray.getCenter(this.j));
-        this.pivot.target.set(this.animArray.getCenter(this.animArray.length - 1));
-    }
-
     runIteration() {
         /*
             One iteration looks like this:
@@ -124,6 +117,11 @@ class PartitionVisualizer {
     }
 
     update() {
+        this.animArray.setCenter(width/2, height/2);
+        this.indicator.target.set(this.animArray.getCenter(this.i));
+        this.currentElement.target.set(this.animArray.getCenter(this.j));
+        this.pivot.target.set(this.animArray.getCenter(this.animArray.length - 1));
+
         this.animArray.update();
         this.indicator.update();
         this.currentElement.update();
