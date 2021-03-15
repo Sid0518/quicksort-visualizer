@@ -79,8 +79,9 @@ class PartitionVisualizer {
 
                 this.j++;
 
-                if(this.j == this.animArray.length) {
+                if(this.j === this.animArray.length) {
                     this.messageDiv.innerHTML = `Algorithm has finished<br>Partition index is ${this.i}`;
+                    this.animArray.setColor(this.i, color(127, 0, 255));
                     this.finished = true;
                 }
 
@@ -120,6 +121,8 @@ class PartitionVisualizer {
 
         if(this.swap !== null) {
             this.swap.update();
+            if(this.j === this.animArray.length - 1 && this.swap.phase === 3)
+                this.swap.second.fill = color(127, 0, 255);
             
             if(this.swap.done)
                 this.runIteration();
