@@ -2,35 +2,42 @@ const ITERATION_DELAY = 1800;
 class PartitionVisualizer {
     constructor(array, width, height) {
         this.animArray = new AnimatedArray(array, width/2, side);
-        
+        let target;
+
         this.i = -1;
+        target = this.animArray.getCenter(this.i);
         this.indicator = new AnimatedElement(
             '',
-            this.animArray.getCenter(this.i),
+            createVector(-side, target.y),
             {
                 stroke: 250,
                 strokeWeight: 4,
             }
         );
+        this.indicator.target.set(target);
 
         this.j = 0;
+        target = this.animArray.getCenter(this.j);
         this.currentElement = new AnimatedElement(
             '',
-            this.animArray.getCenter(this.j),
+            createVector(-side, target.y),
             {
                 stroke: color(242, 203, 108),
                 strokeWeight: 4,
             }
         );
+        this.currentElement.target.set(target);
 
+        target = this.animArray.getCenter(array.length - 1);
         this.pivot = new AnimatedElement(
             array[array.length - 1],
-            this.animArray.getCenter(array.length - 1),
+            createVector(-side, target.y),
             {
                 stroke: color(127, 0, 255),
                 strokeWeight: 4,
             }
         );
+        this.pivot.target.set(target);
         
         this.swap = null;
         this.messageDiv = document.querySelector(".message");
