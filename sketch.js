@@ -1,6 +1,9 @@
-const SPEED = 1.5;
+const SPEED = 1;
 
-const array = [9, 4, 6, 3, 9, 8, 13, 10, 5, 6, 7];
+const array = Array.from({
+    length: 12
+}, (elem, idx) => Math.floor(1 + 99*Math.random()));
+
 const sketch = document.querySelector("#p5-sketch");
 let visualizer;
 

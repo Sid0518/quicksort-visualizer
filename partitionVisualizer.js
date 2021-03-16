@@ -62,15 +62,15 @@ class PartitionVisualizer {
             return;
 
         const x = this.animArray.get(this.j);
-        if(x <= this.pivot.value) {      
+        if(x <= this.pivot.value) {
+            this.messageDiv.innerHTML = `
+                ${x} is <i>not greater</i> than the pivot
+                <br>
+                It needs to be added to the <i>left</i> partition
+            `;
             const i = this.i + 1; // delayed increment
     
             if(this.swap === null && i !== this.j) {
-                this.messageDiv.innerHTML = `
-                    ${x} is <i>not greater</i> than the pivot
-                    <br>
-                    It needs to be added to the <i>left</i> partition
-                `;
                 this.swap = new SwapVisualizer(this.animArray, i, this.j);
                 await this.swap.startDelayed();
 
@@ -79,6 +79,18 @@ class PartitionVisualizer {
             }
             
             else {
+                if(i === this.j) {
+                    await sleep(2000/SPEED);
+                    this.messageDiv.innerHTML = `
+                        Nothing to swap with,
+                        <br>
+                        since the right partition is empty
+                    `;
+                    await sleep(1000/SPEED);
+                    this.animArray.setColor(i, color(7, 123, 138));
+                    await sleep(1500/SPEED);
+                }
+
                 // this.i++;
                 this.animArray.set(this.j, this.animArray.get(i));
                 this.animArray.set(i, x);
@@ -103,19 +115,10 @@ class PartitionVisualizer {
                 }
 
                 else {
-                    if(i === this.j) {
-                        this.messageDiv.innerHTML = `
-                            Nothing to swap with,
-                            <br>
-                            since the right partition is empty
-                        `;
-                        await sleep(1500/SPEED);
-                    }
-                    
                     this.messageDiv.innerHTML = `
                         Moving to the next element
                     `;
-                    await sleep(1000/SPEED);
+                    await sleep(1500/SPEED);
                     this.i++;
                     this.j++;
                     
@@ -139,7 +142,7 @@ class PartitionVisualizer {
             this.messageDiv.innerHTML = `
                 Moving to the next element
             `;
-            await sleep(1000/SPEED);
+            await sleep(1500/SPEED);
             this.j++;
 
             await sleep(1500/SPEED);
