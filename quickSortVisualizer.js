@@ -17,7 +17,7 @@ class QuickSortVisualizer {
     }
 
     getCenter(i) {
-        const n = this.animArray.length;
+        const n = this.array.length;
         return createVector(
             this.center.x + (i - (n - 1)/2)*side, 
             this.center.y
